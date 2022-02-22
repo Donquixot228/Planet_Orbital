@@ -11,7 +11,7 @@ class SpaceCreateState {
 
   factory SpaceCreateState.initial() {
     return SpaceCreateState(
-      planetSize: 20,
+      planetSize: 10,
       palnetColor: AppColors.brownColor,
     );
   }

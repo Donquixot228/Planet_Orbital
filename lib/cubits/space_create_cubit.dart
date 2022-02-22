@@ -10,4 +10,11 @@ class SpaceCreateCubit extends Cubit<SpaceCreateState> {
 Future<void> changeColor({required Color colorPlanet})async{
   emit(state.copyWith(palnetColor: colorPlanet));
 }
+
+  Future<void> changeSizePlaner({required double planetSize})async{
+    emit(state.copyWith(planetSize: planetSize));
+  }
+
+
+
 }
