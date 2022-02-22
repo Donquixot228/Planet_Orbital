@@ -4,11 +4,13 @@ class RollingCircle extends StatefulWidget {
   final double remoteness;
   final int orbitalSpeed;
   final double planetHeight;
+  final Color colorPlanet;
 
-  const RollingCircle({
+   const RollingCircle({
     required this.planetHeight,
     required this.remoteness,
-    this.orbitalSpeed = 1100,
+    required this.colorPlanet,
+    required this.orbitalSpeed,
   });
 
   @override
@@ -17,6 +19,7 @@ class RollingCircle extends StatefulWidget {
 
 class _RollingCircleState extends State<RollingCircle>
     with SingleTickerProviderStateMixin {
+
   late AnimationController _controller;
 
   @override
@@ -27,9 +30,9 @@ class _RollingCircleState extends State<RollingCircle>
       vsync: this,
     )..repeat();
   }
-
   @override
   Widget build(BuildContext context) {
+
     return RotationTransition(
         turns: _controller,
         child: Stack(
@@ -47,15 +50,16 @@ class _RollingCircleState extends State<RollingCircle>
               top: -5,
               left: 0,
               right: 0,
-              child: Container(
-                height: widget.planetHeight,
-                width: widget.planetHeight,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Color(0xFFF65000),
+                child: Container(
+                  height: widget.planetHeight,
+                  width: widget.planetHeight,
+                  decoration:BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: widget.colorPlanet,
+                  ),
                 ),
               ),
-            ),
+
           ],
         ));
   }

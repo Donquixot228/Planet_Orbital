@@ -1,9 +1,13 @@
 import 'dart:developer';
 import 'package:data_prime/cubits/space_create_cubit.dart';
 import 'package:data_prime/resources/app_colors.dart';
+import 'package:data_prime/services/locator.dart';
+import 'package:data_prime/services/navigation_service.dart';
+import 'package:data_prime/widgets/rolling_circle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:rive/rive.dart';
 
 class AddPlanetPage extends StatelessWidget {
   const AddPlanetPage();
@@ -11,7 +15,7 @@ class AddPlanetPage extends StatelessWidget {
   static const String routeName = '/addPlanetPage';
 
   static Widget create() {
-    return AddPlanetPage();
+    return const AddPlanetPage();
   }
 
   @override
@@ -21,7 +25,7 @@ class AddPlanetPage extends StatelessWidget {
         return Container(
           width: double.infinity,
           height: double.infinity,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
               image: AssetImage('assets/images/bg.png'),
               fit: BoxFit.fill,
@@ -30,47 +34,103 @@ class AddPlanetPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: state.palnetColor,
+              SizedBox(
+                height: kToolbarHeight,
+              ),
+              Align(
+                  alignment: Alignment.topLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: AppColors.purpleColor.withOpacity(0.5),
+                      ),
+                      child: TextButton(
+                        onPressed: () async {
+                          context
+                              .read<SpaceCreateCubit>()
+                              .saveAllDataToList()
+                              .then(
+                                (value) =>
+                                    locator<NavigationService>().goBack(),
+                              );
+                        },
+                        child: Text(
+                          'Готово',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText1!
+                              .copyWith(color: AppColors.lightBlueColor),
+                        ),
+                      ),
+                    ),
+                  )),
+              SizedBox(
+                width: 300,
+                height: 300,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    const SizedBox(
+                      height: 50,
+                      width: 50,
+                      child: RiveAnimation.asset(
+                        'assets/animations/sun.riv',
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                    RollingCircle(
+                      colorPlanet: state.planetColor,
+                      planetHeight: state.planetSize,
+                      remoteness: state.remoteness,
+                      orbitalSpeed: state.orbitalSpeed,
+                    ),
+                  ],
                 ),
-                width: state.planetSize < 20 ? 30: state.planetSize,
-                height: state.planetSize < 20 ? 30: state.planetSize,
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.2,
+                height: MediaQuery.of(context).size.height * 0.05,
               ),
               GestureDetector(
                 onTap: () {
                   showDialog(
                       context: context,
                       builder: (BuildContext context) => Dialog(
-                          backgroundColor: Colors.black.withOpacity(0.9),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30)),
+                            backgroundColor: Colors.black.withOpacity(0.9),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30)),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.only(bottom: 8),
-                                  child: Text('Установите цвет планеты',style: Theme.of(context).textTheme.headline6!.copyWith(fontSize: 24),),
+                                  child: Text(
+                                    'Установите цвет планеты',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline6!
+                                        .copyWith(fontSize: 24),
+                                  ),
                                 ),
                                 ColorPicker(
-                                    pickerColor: state.palnetColor,
+                                    pickerColor: state.planetColor,
                                     enableAlpha: true,
                                     hexInputBar: false,
                                     displayThumbColor: false,
-
                                     onColorChanged: (value) {
                                       context
                                           .read<SpaceCreateCubit>()
                                           .changeColor(colorPlanet: value);
-                                      log(state.palnetColor.toString());
+                                      log(state.planetColor.toString());
                                     }),
                                 TextButton(
                                   onPressed: () => Navigator.of(context).pop(),
-                                  child: Text('Select'),
+                                  child: Text(
+                                    'Выбрать',
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1,
+                                  ),
                                 ),
                               ],
                             ),
@@ -91,7 +151,66 @@ class AddPlanetPage extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.1,
+                height: MediaQuery.of(context).size.height * 0.02,
+              ),
+              GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) => Dialog(
+                      backgroundColor: Colors.black.withOpacity(0.5),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: BlocBuilder<SpaceCreateCubit, SpaceCreateState>(
+                        builder: (context, state) {
+                          return SizedBox(
+                            height: 250,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text(
+                                  'Установите отдаленность планеты',
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                ),
+                                Slider(
+                                  value: state.remoteness,
+                                  min: 50,
+                                  max: 400,
+                                  onChanged: (value) {
+                                    context
+                                        .read<SpaceCreateCubit>()
+                                        .changeRemoteness(
+                                            remoteness: value.roundToDouble());
+                                    log(state.remoteness.toString());
+                                  },
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  );
+                },
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  height: MediaQuery.of(context).size.height * 0.08,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: AppColors.purpleColor.withOpacity(0.5),
+                  ),
+                  child: Text(
+                    'Установите отдаленность',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.02,
               ),
               GestureDetector(
                 onTap: () {
@@ -103,7 +222,7 @@ class AddPlanetPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(30)),
                       child: BlocBuilder<SpaceCreateCubit, SpaceCreateState>(
                         builder: (context, state) {
-                          return Container(
+                          return SizedBox(
                             height: 250,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -149,6 +268,65 @@ class AddPlanetPage extends StatelessWidget {
                 ),
               ),
               SizedBox(
+                height: MediaQuery.of(context).size.height * 0.02,
+              ),
+              GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) => Dialog(
+                      backgroundColor: Colors.black.withOpacity(0.5),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30)),
+                      child: BlocBuilder<SpaceCreateCubit, SpaceCreateState>(
+                        builder: (context, state) {
+                          return SizedBox(
+                            height: 250,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text(
+                                  'Установите скорость вращения планеты',
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                ),
+                                Slider(
+                                  value: state.orbitalSpeed.toDouble(),
+                                  min: 999,
+                                  max: 4999,
+                                  onChanged: (value) {
+                                    context
+                                        .read<SpaceCreateCubit>()
+                                        .changeOrbitalSpeed(
+                                          orbitalSpeed: value.toInt(),
+                                        );
+                                    log(state.orbitalSpeed.toString());
+                                  },
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  );
+                },
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  height: MediaQuery.of(context).size.height * 0.08,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: AppColors.purpleColor.withOpacity(0.5),
+                  ),
+                  child: Text(
+                    'Установите скорость вращения планеты',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                ),
+              ),
+              const SizedBox(
                 height: kBottomNavigationBarHeight,
               ),
             ],

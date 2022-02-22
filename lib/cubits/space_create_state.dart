@@ -2,26 +2,41 @@ part of 'space_create_cubit.dart';
 
 class SpaceCreateState {
   final double planetSize;
-  final Color palnetColor;
+  final Color planetColor;
+  final double remoteness;
+  final int orbitalSpeed;
+ final List<PlanetModel> listPlanet;
 
-  const SpaceCreateState({
+  SpaceCreateState({
+    required this.orbitalSpeed,
     required this.planetSize,
-    required this.palnetColor,
-  });
+    required this.planetColor,
+    required this.remoteness,
+ required this.listPlanet ,
+  }  );
 
   factory SpaceCreateState.initial() {
     return SpaceCreateState(
-      planetSize: 10,
-      palnetColor: AppColors.brownColor,
+      listPlanet: [],
+      orbitalSpeed: 1100,
+      remoteness: 100,
+      planetSize: 15,
+      planetColor: AppColors.brownColor,
     );
   }
 
   SpaceCreateState copyWith({
     double? planetSize,
-    Color? palnetColor,
+    Color? planetColor,
+    double? remoteness,
+    int? orbitalSpeed,
+
   }) {
     return SpaceCreateState(
-      palnetColor: palnetColor ?? this.palnetColor,
+      listPlanet: listPlanet ,
+      orbitalSpeed: orbitalSpeed ?? this.orbitalSpeed,
+      remoteness: remoteness ?? this.remoteness,
+      planetColor: planetColor ?? this.planetColor,
       planetSize: planetSize ?? this.planetSize,
     );
   }
