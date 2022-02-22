@@ -48,6 +48,7 @@ class AddPlanetPage extends StatelessWidget {
                       ),
                       child: TextButton(
                         onPressed: () async {
+
                           context
                               .read<SpaceCreateCubit>()
                               .saveAllDataToList()
@@ -90,7 +91,7 @@ class AddPlanetPage extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.05,
+                height: MediaQuery.of(context).size.height * 0.02,
               ),
               GestureDetector(
                 onTap: () {

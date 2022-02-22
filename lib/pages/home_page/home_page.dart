@@ -39,8 +39,7 @@ class HomePage extends StatelessWidget {
                 alignment: Alignment.topCenter,
                 child: Text(
                   'Data Time \nSpace System',
-                  style: Theme
-                      .of(context)
+                  style: Theme.of(context)
                       .textTheme
                       .headline6!
                       .copyWith(fontSize: 25),
@@ -60,16 +59,13 @@ class HomePage extends StatelessWidget {
                       fit: BoxFit.fill,
                     ),
                   ),
-                 ListView.builder(
-                      itemCount: state.listPlanet.length,
-                      itemBuilder: (context, index) {
-                        return RollingCircle(
-                          planetHeight: state.listPlanet[index].planetSize,
-                          remoteness: state.listPlanet[index].remoteness,
-                          colorPlanet: state.listPlanet[index].planetColor,
-                          orbitalSpeed: state.listPlanet[index].orbitalSpeed,);
-                      },
-                    ),
+                  // НЕ ЗНАЮ КАК ВЫВЕСТИ В СТЕК ВИДЖЕТЫ ПО ИНДЕКСУ (ПО АНАЛОГИИ КАК В LISTVIEW.BUILDER)
+                  RollingCircle(
+                    planetHeight: state.planetSize,
+                    remoteness: state.remoteness,
+                    colorPlanet: state.planetColor,
+                    orbitalSpeed: state.orbitalSpeed,
+                  ),
                 ],
               ),
             ),
@@ -77,30 +73,20 @@ class HomePage extends StatelessWidget {
               alignment: Alignment.bottomCenter,
               child: Padding(
                 padding:
-                const EdgeInsets.only(bottom: kBottomNavigationBarHeight),
+                    const EdgeInsets.only(bottom: kBottomNavigationBarHeight),
                 child: GestureDetector(
-                  onTap: () =>
-                      locator<NavigationService>()
-                          .navigateTo(AddPlanetPage.routeName),
+                  onTap: () => locator<NavigationService>()
+                      .navigateTo(AddPlanetPage.routeName),
                   child: Container(
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width * 0.7,
-                    height: MediaQuery
-                        .of(context)
-                        .size
-                        .height * 0.09,
+                    width: MediaQuery.of(context).size.width * 0.7,
+                    height: MediaQuery.of(context).size.height * 0.09,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                         color: AppColors.purpleColor.withOpacity(0.5),
                         borderRadius: BorderRadius.circular(30)),
                     child: Text(
                       'Добавить планету в систему',
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .bodyText1,
+                      style: Theme.of(context).textTheme.bodyText1,
                       textAlign: TextAlign.center,
                     ),
                   ),

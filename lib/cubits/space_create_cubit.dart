@@ -35,6 +35,6 @@ class SpaceCreateCubit extends Cubit<SpaceCreateState> {
       planetColor: state.planetColor,
       remoteness: state.remoteness,
     );
-     state.listPlanet!.add(planetModel);
+     state.listPlanet.add(planetModel);
   }
 }

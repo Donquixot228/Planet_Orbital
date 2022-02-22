@@ -11,7 +11,7 @@ import 'services/navigation_service.dart';
 void main() {
   setupLocator();
   runApp(BlocProvider(
-    create: (context) => SpaceCreateCubit(),
+    create: (context) => SpaceCreateCubit()..saveAllDataToList(),
     child: MyApp(),
   ));
 }
