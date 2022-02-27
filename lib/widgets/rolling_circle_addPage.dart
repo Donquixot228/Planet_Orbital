@@ -1,10 +1,10 @@
 import 'package:data_prime/models/planet_model.dart';
 import 'package:flutter/material.dart';
 
-class RollingCircle extends StatefulWidget {
- final PlanetModel planetModel;
+class RollingCircleAdd extends StatefulWidget {
+  final PlanetModel planetModel;
 
-   const RollingCircle({
+  const RollingCircleAdd({
     required this.planetModel,
   });
 
@@ -12,7 +12,7 @@ class RollingCircle extends StatefulWidget {
   _RollingCircleState createState() => _RollingCircleState();
 }
 
-class _RollingCircleState extends State<RollingCircle>
+class _RollingCircleState extends State<RollingCircleAdd>
     with SingleTickerProviderStateMixin {
 
   late AnimationController _controller;
@@ -46,15 +46,15 @@ class _RollingCircleState extends State<RollingCircle>
               top: -5,
               left: 0,
               right: 0,
-                child: Container(
-                  height: widget.planetModel.planetSize,
-                  width: widget.planetModel.planetSize,
-                  decoration:BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: widget.planetModel.planetColor,
-                  ),
+              child: Container(
+                height: widget.planetModel.planetSize,
+                width: widget.planetModel.planetSize,
+                decoration:BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: widget.planetModel.planetColor,
                 ),
               ),
+            ),
 
           ],
         ));

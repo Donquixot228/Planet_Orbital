@@ -1,9 +1,11 @@
 import 'dart:developer';
 import 'package:data_prime/cubits/space_create_cubit.dart';
+import 'package:data_prime/models/planet_model.dart';
 import 'package:data_prime/resources/app_colors.dart';
 import 'package:data_prime/services/locator.dart';
 import 'package:data_prime/services/navigation_service.dart';
 import 'package:data_prime/widgets/rolling_circle.dart';
+import 'package:data_prime/widgets/rolling_circle_addPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -48,7 +50,6 @@ class AddPlanetPage extends StatelessWidget {
                       ),
                       child: TextButton(
                         onPressed: () async {
-
                           context
                               .read<SpaceCreateCubit>()
                               .saveAllDataToList()
@@ -81,11 +82,13 @@ class AddPlanetPage extends StatelessWidget {
                         fit: BoxFit.fill,
                       ),
                     ),
-                    RollingCircle(
-                      colorPlanet: state.planetColor,
-                      planetHeight: state.planetSize,
-                      remoteness: state.remoteness,
-                      orbitalSpeed: state.orbitalSpeed,
+                    RollingCircleAdd(
+                      planetModel: PlanetModel(
+                        orbitalSpeed: state.orbitalSpeed,
+                        planetSize: state.planetSize,
+                        remoteness: state.remoteness,
+                        planetColor: state.planetColor,
+                      ),
                     ),
                   ],
                 ),

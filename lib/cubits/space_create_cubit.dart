@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:data_prime/models/planet_model.dart';
 import 'package:data_prime/resources/app_colors.dart';
+import 'package:data_prime/widgets/rolling_circle.dart';
 import 'package:flutter/material.dart';
 
 part 'space_create_state.dart';
@@ -29,12 +30,15 @@ class SpaceCreateCubit extends Cubit<SpaceCreateState> {
   }
 
   Future<void> saveAllDataToList() async {
-    PlanetModel planetModel = PlanetModel(
-      orbitalSpeed: state.orbitalSpeed,
-      planetSize: state.planetSize,
-      planetColor: state.planetColor,
-      remoteness: state.remoteness,
+    state.listRollingWidget.add(
+      RollingCircle(
+        planetModel: PlanetModel(
+          orbitalSpeed: state.orbitalSpeed,
+          planetSize: state.planetSize,
+          planetColor: state.planetColor,
+          remoteness: state.remoteness,
+        ),
+      ),
     );
-     state.listPlanet.add(planetModel);
   }
 }

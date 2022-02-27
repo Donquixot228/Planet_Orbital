@@ -5,15 +5,17 @@ class SpaceCreateState {
   final Color planetColor;
   final double remoteness;
   final int orbitalSpeed;
- final List<PlanetModel> listPlanet;
+  final List<PlanetModel> listPlanet;
+  final List<RollingCircle> listRollingWidget;
 
   SpaceCreateState({
     required this.orbitalSpeed,
     required this.planetSize,
     required this.planetColor,
     required this.remoteness,
- required this.listPlanet ,
-  }  );
+    required this.listPlanet,
+    required this.listRollingWidget,
+  });
 
   factory SpaceCreateState.initial() {
     return SpaceCreateState(
@@ -22,6 +24,7 @@ class SpaceCreateState {
       remoteness: 100,
       planetSize: 15,
       planetColor: AppColors.brownColor,
+      listRollingWidget: [],
     );
   }
 
@@ -30,10 +33,10 @@ class SpaceCreateState {
     Color? planetColor,
     double? remoteness,
     int? orbitalSpeed,
-
   }) {
     return SpaceCreateState(
-      listPlanet: listPlanet ,
+      listPlanet: this.listPlanet,
+      listRollingWidget: this.listRollingWidget,
       orbitalSpeed: orbitalSpeed ?? this.orbitalSpeed,
       remoteness: remoteness ?? this.remoteness,
       planetColor: planetColor ?? this.planetColor,

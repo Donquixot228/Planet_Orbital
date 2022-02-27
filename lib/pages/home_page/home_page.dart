@@ -1,4 +1,5 @@
 import 'package:data_prime/cubits/space_create_cubit.dart';
+import 'package:data_prime/models/planet_model.dart';
 import 'package:data_prime/pages/add_planet_page/add_planet_page.dart';
 import 'package:data_prime/resources/app_colors.dart';
 import 'package:data_prime/services/locator.dart';
@@ -48,25 +49,23 @@ class HomePage extends StatelessWidget {
               ),
             ),
             Center(
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Container(
-                    height: 50,
-                    width: 50,
-                    child: RiveAnimation.asset(
-                      'assets/animations/sun.riv',
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                  // НЕ ЗНАЮ КАК ВЫВЕСТИ В СТЕК ВИДЖЕТЫ ПО ИНДЕКСУ (ПО АНАЛОГИИ КАК В LISTVIEW.BUILDER)
-                  RollingCircle(
-                    planetHeight: state.planetSize,
-                    remoteness: state.remoteness,
-                    colorPlanet: state.planetColor,
-                    orbitalSpeed: state.orbitalSpeed,
-                  ),
-                ],
+              child: BlocBuilder<SpaceCreateCubit, SpaceCreateState>(
+                builder: (context, state) {
+                  return Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Container(
+                        height: 50,
+                        width: 50,
+                        child: RiveAnimation.asset(
+                          'assets/animations/sun.riv',
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      ...state.listRollingWidget,
+                    ],
+                  );
+                },
               ),
             ),
             Align(
